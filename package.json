@@ -1,6 +1,6 @@
 {
   "name": "rc-editor-plugin-emoji",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "editor-plugin-emoji ui component for react",
   "keywords": [
     "react",

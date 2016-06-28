@@ -19,7 +19,7 @@ export default function(props) {
     ['emoji']: true,
     [`emoji-${emoji.shortCut}`]: true
   });
-  const emojiStyle = {...iconStyle, backgroundImage: `url('/assets/icons/${emoji.emotionId}')`};
+  const emojiStyle = {...iconStyle, backgroundImage: `url('${emoji.url}')`};
 
   return <span style={emojiStyle} className={className}>{props.children}</span>;
 }

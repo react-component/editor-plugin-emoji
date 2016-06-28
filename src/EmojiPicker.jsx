@@ -25,7 +25,7 @@ export default class EmojiPicker extends React.Component {
         [`emoji-${emoji.shortCut}`]: true
       });
       return <span className={className} onMouseDown={this.pickEmoji.bind(this, emoji)}>
-        <img src={`/assets/icons/${emoji.emotionId}`} alt=""/>
+        <img src={`${emoji.url}`} alt=""/>
       </span>;
     });
     const paginations = [];
