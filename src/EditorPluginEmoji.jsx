@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
-import { EditorState, Entity, Modifier } from 'draft-js';
-import EmojiPicker from './EmojiPicker';
+import { EditorState, Entity, Modifier, convertToRaw } from 'draft-js';
+import EmojiButton from './EmojiButton';
 import EmojiIcon from './EmojiIcon';
 
 function noop() {};
@@ -33,7 +33,20 @@ function insertEntity(editorState, entityType, data, entityMode = 'IMMUTABLE') {
     {},
     entityKey
   );
-  return EditorState.push(editorState, insertContent, 'insert-entity');
+
+  const InsertSpaceContent = Modifier.insertText(
+    insertContent,
+    insertContent.getSelectionAfter(),
+    ' ',
+  );
+
+  const newEditorState = EditorState.push(editorState, InsertSpaceContent, 'insert-entity');
+  return EditorState.forceSelection(newEditorState, InsertSpaceContent.getSelectionAfter());
+}
+
+function exportEntity(entityData) {
+  console.log('> exportEneity', entityData);
+  return `${entityData.emoji.shortCut}`;
 }
 
 const Emoji = {
@@ -44,7 +57,7 @@ const Emoji = {
     }
     function pickEmoji(emoji) {
       const editorState = callbacks.getEditorState();
-      callbacks.setEditorState(insertEntity(editorState, 'emoji', { emoji }));
+      callbacks.setEditorState(insertEntity(editorState, 'emoji', { emoji, export: exportEntity }));
     }
     return {
       name: 'emoji',
@@ -53,17 +66,8 @@ const Emoji = {
         strategy: findEntities('emoji'),
         component: EmojiIcon
       }],
-      component: (props) => {
-        const classNames = classnames({
-          ['editor-icon']: true,
-          ['editor-icon-emoji']: true,
-        });
-        return (<div className="editor-icon-emoji-wrap">
-          <span className={classNames} />
-          <EmojiPicker onChange={pickEmoji.bind(this)} />
-        </div>);
-      }
-    }
+      component: (props) => <EmojiButton onChange={pickEmoji.bind(this)}/>
+    };
   },
   config: {},
 };

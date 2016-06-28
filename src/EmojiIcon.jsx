@@ -1,6 +1,6 @@
 import React from 'react';
 import classname from 'classnames';
-import emoticons from './emoticons';
+import { Entity } from 'draft-js';
 
 const iconStyle = {
   letterSpacing: 32,
@@ -8,16 +8,18 @@ const iconStyle = {
   fontSize: 32,
   height: 32,
   display: 'inline-block',
-}
+  backgroundSize: '100%',
+};
+
 export default function(props) {
   const { entityKey } = props;
   const data = Entity.get(entityKey).getData();
   const { emoji } = data;
   const className = classname({
     ['emoji']: true,
-    ['emoji-emoticons']: emoticons.indexOf(emoji) !== -1,
-    [`emoji-${emoji}`]: true
+    [`emoji-${emoji.shortCut}`]: true
   });
+  const emojiStyle = {...iconStyle, backgroundImage: `url('/assets/icons/${emoji.emotionId}')`};
 
-  return <span style={iconStyle} className={className}>{props.children}</span>;
+  return <span style={emojiStyle} className={className}>{props.children}</span>;
 }
