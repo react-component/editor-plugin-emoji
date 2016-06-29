@@ -20689,18 +20689,33 @@ webpackJsonp([0,1],[
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.replaceEntity = replaceEntity;
+	exports.createEntity = createEntity;
 	exports.insertEntity = insertEntity;
 	exports.exportEntity = exportEntity;
 	
 	var _draftJs = __webpack_require__(164);
+	
+	function replaceEntity(editorState, selection, text, entity) {
+	  var content = editorState.getCurrentContent();
+	  var insertContent = _draftJs.Modifier.replaceText(content, selection, text, {}, entity);
+	
+	  var newEditorState = _draftJs.EditorState.push(editorState, insertContent, 'replace-entity');
+	  return newEditorState;
+	}
+	
+	function createEntity(entityType, data) {
+	  var entityMode = arguments.length <= 2 || arguments[2] === undefined ? 'IMMUTABLE' : arguments[2];
+	
+	  return _draftJs.Entity.create(entityType, entityMode, data || {});
+	}
 	
 	function insertEntity(editorState, entityType, data) {
 	  var entityMode = arguments.length <= 3 || arguments[3] === undefined ? 'IMMUTABLE' : arguments[3];
 	
 	  var selection = editorState.getSelection();
 	  var content = editorState.getCurrentContent();
-	  var entityKey = _draftJs.Entity.create(entityType, entityMode, data || {});
-	  console.log('>> entityKey', entityKey);
+	  var entityKey = createEntity(entityType, data, entityMode);
 	  var insertContent = _draftJs.Modifier.insertText(content, selection, ' ', {}, entityKey);
 	
 	  var InsertSpaceContent = _draftJs.Modifier.insertText(insertContent, insertContent.getSelectionAfter(), ' ');
@@ -21026,7 +21041,6 @@ webpackJsonp([0,1],[
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 	
 	var emojiMap = {};
-	console.log('>> insertEntity', _util.insertEntity);
 	
 	_emojisList2.default.forEach(function (emoji) {
 	  var shortCut = emoji.shortCut;
@@ -21076,7 +21090,7 @@ webpackJsonp([0,1],[
 	      focusOffset: endKey
 	    });
 	    if (emojiMap.hasOwnProperty(decoratedText)) {
-	      setEditorState((0, _util.insertEntity)(editorState, 'emoji', { emoji: emojiMap[decoratedText], export: _util.exportEntity }));
+	      setEditorState((0, _util.replaceEntity)(editorState, updatedSelection, ' ', (0, _util.createEntity)('emoji', { emoji: emojiMap[decoratedText], export: _util.exportEntity })));
 	    }
 	    // if (emojiMap.hasOwnProperty(decoratedText)) {
 	    //   Entity.replaceData(entityKey, emojiMap[decoratedText]);
