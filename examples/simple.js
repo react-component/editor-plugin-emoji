@@ -20700,8 +20700,8 @@ webpackJsonp([0,1],[
 	  var content = editorState.getCurrentContent();
 	  var insertContent = _draftJs.Modifier.replaceText(content, selection, text, {}, entity);
 	
-	  var newEditorState = _draftJs.EditorState.push(editorState, insertContent, 'replace-entity');
-	  return newEditorState;
+	  var InsertSpaceContent = _draftJs.Modifier.insertText(insertContent, insertContent.getSelectionAfter(), ' ');
+	  return _draftJs.EditorState.push(editorState, InsertSpaceContent, 'replace-entity');
 	}
 	
 	function createEntity(entityType, data) {
