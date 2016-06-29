@@ -138,11 +138,6 @@ webpackJsonp([0,1],[
 	  };
 	}
 	
-	function exportEntity(entityData) {
-	  console.log('> exportEneity', entityData);
-	  return '' + entityData.emoji.shortCut;
-	}
-	
 	var Emoji = {
 	  constructor: function constructor() {
 	    var _this = this;
@@ -155,7 +150,7 @@ webpackJsonp([0,1],[
 	    };
 	    function pickEmoji(emoji) {
 	      var editorState = callbacks.getEditorState();
-	      callbacks.setEditorState((0, _util.insertEntity)(editorState, 'emoji', { emoji: emoji, export: exportEntity }));
+	      callbacks.setEditorState((0, _util.insertEntity)(editorState, 'emoji', { emoji: emoji, export: _util.exportEntity }));
 	    }
 	    return {
 	      name: 'emoji',
@@ -20695,6 +20690,7 @@ webpackJsonp([0,1],[
 	  value: true
 	});
 	exports.insertEntity = insertEntity;
+	exports.exportEntity = exportEntity;
 	
 	var _draftJs = __webpack_require__(164);
 	
@@ -20711,6 +20707,11 @@ webpackJsonp([0,1],[
 	
 	  var newEditorState = _draftJs.EditorState.push(editorState, InsertSpaceContent, 'insert-entity');
 	  return _draftJs.EditorState.forceSelection(newEditorState, InsertSpaceContent.getSelectionAfter());
+	}
+	
+	function exportEntity(entityData) {
+	  console.log('> exportEneity', entityData);
+	  return '' + entityData.emoji.shortCut;
 	}
 
 /***/ },
@@ -21010,6 +21011,10 @@ webpackJsonp([0,1],[
 	
 	var _emojisList2 = _interopRequireDefault(_emojisList);
 	
+	var _util = __webpack_require__(460);
+	
+	var _DraftOffsetKey = __webpack_require__(381);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
@@ -21021,6 +21026,7 @@ webpackJsonp([0,1],[
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 	
 	var emojiMap = {};
+	console.log('>> insertEntity', _util.insertEntity);
 	
 	_emojisList2.default.forEach(function (emoji) {
 	  var shortCut = emoji.shortCut;
@@ -21040,12 +21046,41 @@ webpackJsonp([0,1],[
 	  EmojiRaw.prototype.componentDidMount = function componentDidMount() {
 	    var _props = this.props;
 	    var decoratedText = _props.decoratedText;
-	    var entityKey = _props.entityKey;
+	    var callbacks = _props.callbacks;
+	    var offsetKey = _props.offsetKey;
+	    var getEditorState = callbacks.getEditorState;
+	    var setEditorState = callbacks.setEditorState;
 	
-	    console.log('>> EmojiRaw ', this.props, _draftJs.Entity.get(entityKey));
-	    if (emojiMap.hasOwnProperty(decoratedText)) {
-	      _draftJs.Entity.replaceData(entityKey, emojiMap[decoratedText]);
+	    var editorState = getEditorState();
+	    var contentState = editorState.getCurrentContent();
+	    var blockMap = contentState.getBlockMap();
+	
+	    var _decode = (0, _DraftOffsetKey.decode)(offsetKey);
+	
+	    var blockKey = _decode.blockKey;
+	    var decoratorKey = _decode.decoratorKey;
+	    var leafKey = _decode.leafKey;
+	
+	    var leaf = editorState.getBlockTree(blockKey).getIn([decoratorKey, 'leaves', leafKey]);
+	    if (!leaf) {
+	      return false;
 	    }
+	    var startKey = leaf.get('start');
+	    var endKey = leaf.get('end');
+	    console.log('EmojiRaw', startKey, endKey);
+	    var selection = _draftJs.SelectionState.createEmpty();
+	    var updatedSelection = selection.merge({
+	      anchorKey: blockKey,
+	      anchorOffset: startKey,
+	      focusKey: blockKey,
+	      focusOffset: endKey
+	    });
+	    if (emojiMap.hasOwnProperty(decoratedText)) {
+	      setEditorState((0, _util.insertEntity)(editorState, 'emoji', { emoji: emojiMap[decoratedText], export: _util.exportEntity }));
+	    }
+	    // if (emojiMap.hasOwnProperty(decoratedText)) {
+	    //   Entity.replaceData(entityKey, emojiMap[decoratedText]);
+	    // }
 	  };
 	
 	  EmojiRaw.prototype.render = function render() {
