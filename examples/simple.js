@@ -21001,7 +21001,8 @@ webpackJsonp([0,1],[
 	  fontSize: 32,
 	  height: 32,
 	  display: 'inline-block',
-	  backgroundSize: '100%'
+	  backgroundSize: '100%',
+	  overflow: 'hidden'
 	};
 	
 	module.exports = exports['default'];
