@@ -146,11 +146,13 @@ webpackJsonp([0,1],[
 	
 	    var callbacks = {
 	      getEditorState: noop,
-	      setEditorState: noop
+	      setEditorState: noop,
+	      focus: noop
 	    };
 	    function pickEmoji(emoji) {
 	      var editorState = callbacks.getEditorState();
 	      callbacks.setEditorState((0, _util.insertEntity)(editorState, 'emoji', { emoji: emoji, export: _util.exportEntity }));
+	      callbacks.focus();
 	    }
 	    return {
 	      name: 'emoji',
@@ -20782,7 +20784,6 @@ webpackJsonp([0,1],[
 	    };
 	
 	    _this.hideEmojiPicker = function (e) {
-	      e.preventDefault();
 	      _this.setState({
 	        visible: false
 	      });
