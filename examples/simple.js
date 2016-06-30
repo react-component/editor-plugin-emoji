@@ -151,8 +151,7 @@ webpackJsonp([0,1],[
 	    };
 	    function pickEmoji(emoji) {
 	      var editorState = callbacks.getEditorState();
-	      callbacks.setEditorState((0, _util.insertEntity)(editorState, 'emoji', { emoji: emoji, export: _util.exportEntity }));
-	      callbacks.focus();
+	      callbacks.setEditorState((0, _util.insertEntity)(editorState, 'emoji', { emoji: emoji, export: _util.exportEntity }), true);
 	    }
 	    return {
 	      name: 'emoji',
@@ -20702,7 +20701,7 @@ webpackJsonp([0,1],[
 	  var content = editorState.getCurrentContent();
 	  var insertContent = _draftJs.Modifier.replaceText(content, selection, text, {}, entity);
 	
-	  var InsertSpaceContent = _draftJs.Modifier.insertText(insertContent, insertContent.getSelectionAfter(), ' ');
+	  var InsertSpaceContent = _draftJs.Modifier.insertText(insertContent, insertContent.getSelectionAfter(), '');
 	  return _draftJs.EditorState.push(editorState, InsertSpaceContent, 'replace-entity');
 	}
 	
@@ -20720,7 +20719,7 @@ webpackJsonp([0,1],[
 	  var entityKey = createEntity(entityType, data, entityMode);
 	  var insertContent = _draftJs.Modifier.insertText(content, selection, ' ', {}, entityKey);
 	
-	  var InsertSpaceContent = _draftJs.Modifier.insertText(insertContent, insertContent.getSelectionAfter(), ' ');
+	  var InsertSpaceContent = _draftJs.Modifier.insertText(insertContent, insertContent.getSelectionAfter(), '');
 	
 	  var newEditorState = _draftJs.EditorState.push(editorState, InsertSpaceContent, 'insert-entity');
 	  return _draftJs.EditorState.forceSelection(newEditorState, InsertSpaceContent.getSelectionAfter());
