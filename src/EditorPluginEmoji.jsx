@@ -1,10 +1,23 @@
 import React from 'react';
 import classnames from 'classnames';
 import { EditorState, Entity, Modifier, convertToRaw } from 'draft-js';
+import { insertEntity, exportEntity } from './util';
 import EmojiButton from './EmojiButton';
 import EmojiIcon from './EmojiIcon';
+import EmojiRaw from './EmojiRaw';
 
 function noop() {};
+
+const emojiRex = /\[([\u4e00-\u9fa5])+\]/g;
+
+function findWithRegex(regex, contentBlock, callback) {
+  const text = contentBlock.getText();
+  let matchArr, start;
+  while ((matchArr = regex.exec(text)) !== null) {
+    start = matchArr.index;
+    callback(start, start + matchArr[0].length);
+  }
+}
 
 function findEntities(entityType) {
   return function findEntitiesFunc(contentBlock, callback) {
@@ -21,43 +34,18 @@ function findEntities(entityType) {
   }
 }
 
-function insertEntity(editorState, entityType, data, entityMode = 'IMMUTABLE') {
-  const selection = editorState.getSelection();
-  const content = editorState.getCurrentContent();
-  const entityKey = Entity.create(entityType, entityMode, data || {});
-  console.log('>> entityKey', entityKey);
-  const insertContent = Modifier.insertText(
-    content,
-    selection,
-    ' ',
-    {},
-    entityKey
-  );
 
-  const InsertSpaceContent = Modifier.insertText(
-    insertContent,
-    insertContent.getSelectionAfter(),
-    ' ',
-  );
-
-  const newEditorState = EditorState.push(editorState, InsertSpaceContent, 'insert-entity');
-  return EditorState.forceSelection(newEditorState, InsertSpaceContent.getSelectionAfter());
-}
-
-function exportEntity(entityData) {
-  console.log('> exportEneity', entityData);
-  return `${entityData.emoji.shortCut}`;
-}
 
 const Emoji = {
   constructor(config = {}) {
     const callbacks = {
       getEditorState: noop,
       setEditorState: noop,
+      focus: noop,
     }
     function pickEmoji(emoji) {
       const editorState = callbacks.getEditorState();
-      callbacks.setEditorState(insertEntity(editorState, 'emoji', { emoji, export: exportEntity }));
+      callbacks.setEditorState(insertEntity(editorState, 'emoji', { emoji, export: exportEntity }), true);
     }
     return {
       name: 'emoji',
@@ -65,6 +53,9 @@ const Emoji = {
       decorators: [{
         strategy: findEntities('emoji'),
         component: EmojiIcon
+      }, {
+        strategy: (contentBlock, callback) => findWithRegex(emojiRex, contentBlock, callback),
+        component: (props) => <EmojiRaw callbacks={callbacks} {...props}/>
       }],
       component: (props) => <EmojiButton onChange={pickEmoji.bind(this)}/>
     };

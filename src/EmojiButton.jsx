@@ -18,7 +18,6 @@ class EmojiButton extends React.Component {
     });
   }
   hideEmojiPicker = (e) => {
-    e.preventDefault();
     this.setState({
       visible: false,
     });
