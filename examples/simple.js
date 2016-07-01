@@ -21093,7 +21093,7 @@ webpackJsonp([0,1],[
 	    if (emojiMap.hasOwnProperty(decoratedText)) {
 	      var newEditorState = (0, _util.replaceEntity)(editorState, updatedSelection, ' ', (0, _util.createEntity)('emoji', { emoji: emojiMap[decoratedText], export: _util.exportEntity }));
 	
-	      setEditorState(_draftJs.EditorState.forceSelection(newEditorState, newEditorState.getCurrentContent().getSelectionAfter()));
+	      setEditorState(_draftJs.EditorState.moveFocusToEnd(newEditorState));
 	    }
 	    // if (emojiMap.hasOwnProperty(decoratedText)) {
 	    //   Entity.replaceData(entityKey, emojiMap[decoratedText]);
