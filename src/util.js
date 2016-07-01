@@ -13,7 +13,7 @@ export function replaceEntity(editorState, selection, text, entity) {
   const InsertSpaceContent = Modifier.insertText(
     insertContent,
     insertContent.getSelectionAfter(),
-    '',
+    ' ',
   );
   return EditorState.push(editorState, InsertSpaceContent, 'replace-entity');
 }
@@ -37,7 +37,7 @@ export function insertEntity(editorState, entityType, data, entityMode = 'IMMUTA
   const InsertSpaceContent = Modifier.insertText(
     insertContent,
     insertContent.getSelectionAfter(),
-    '',
+    ' ',
   );
 
   const newEditorState = EditorState.push(editorState, InsertSpaceContent, 'insert-entity');

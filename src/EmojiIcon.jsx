@@ -10,6 +10,7 @@ const iconStyle = {
   height: 32,
   display: 'inline-block',
   backgroundSize: '100%',
+  overflow: 'hidden',
 };
 
 export default function(props) {
