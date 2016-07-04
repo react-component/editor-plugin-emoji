@@ -20974,7 +20974,7 @@ webpackJsonp([0,1],[
 	  var emojiStyle = _extends({}, iconStyle, { backgroundImage: 'url(\'' + emoji.url + '\')' });
 	  return _react2.default.createElement(
 	    'span',
-	    { style: emojiStyle, className: className },
+	    { style: emojiStyle, contentEditable: false, className: className },
 	    props.children
 	  );
 	};
