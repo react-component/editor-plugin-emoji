@@ -19010,10 +19010,10 @@ webpackJsonp([0,1],[
 	  return _draftJs.EditorState.push(editorState, InsertSpaceContent, 'replace-entity');
 	}
 	
-	function createEntity(entityType, data) {
-	  var entityMode = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'IMMUTABLE';
+	function createEntity(contentState, entityType, data) {
+	  var entityMode = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'IMMUTABLE';
 	
-	  return _draftJs.Entity.create(entityType, entityMode, data || {});
+	  return contentState.createEntity(entityType, entityMode, data || {});
 	}
 	
 	function insertEntity(editorState, entityType, data) {
@@ -35163,7 +35163,7 @@ webpackJsonp([0,1],[
 	      focusOffset: endKey
 	    });
 	    if (emojiMap.hasOwnProperty(decoratedText)) {
-	      var newEditorState = (0, _util.replaceEntity)(editorState, updatedSelection, ' ', (0, _util.createEntity)('emoji', { emoji: emojiMap[decoratedText], export: _util.exportEntity }));
+	      var newEditorState = (0, _util.replaceEntity)(editorState, updatedSelection, ' ', (0, _util.createEntity)(contentState, 'emoji', { emoji: emojiMap[decoratedText], export: _util.exportEntity }));
 	
 	      setEditorState(_draftJs.EditorState.moveFocusToEnd(newEditorState));
 	    }
