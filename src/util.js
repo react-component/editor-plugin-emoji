@@ -1,9 +1,8 @@
-import { EditorState, Modifier, Entity } from 'draft-js';
+import { EditorState, Modifier, Entity } from '@alipay/draft-js';
 
-export function replaceEntity(editorState, selection, text, entity) {
-  const content = editorState.getCurrentContent();
+export function replaceEntity(currentContent, selection, text, entity) {
   const insertContent = Modifier.replaceText(
-    content,
+    currentContent,
     selection,
     text,
     {},
@@ -18,16 +17,17 @@ export function replaceEntity(editorState, selection, text, entity) {
   return EditorState.push(editorState, InsertSpaceContent, 'replace-entity');
 }
 
-export function createEntity(entityType, data, entityMode = 'IMMUTABLE') {
-  return Entity.create(entityType, entityMode, data || {});
+export function createEntity(contentState, entityType, data, entityMode = 'IMMUTABLE') {
+  return contentState.createEntity(entityType, entityMode, data || {});
 }
 
 export function insertEntity(editorState, entityType, data, entityMode = 'IMMUTABLE') {
   const selection = editorState.getSelection();
   const content = editorState.getCurrentContent();
-  const entityKey = createEntity(entityType, data, entityMode);
+  const contentStateWithEntity = createEntity(content, entityType, data, entityMode);
+  const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
   const insertContent = Modifier.insertText(
-    content,
+    contentStateWithEntity,
     selection,
     ' ',
     {},

@@ -1,8 +1,8 @@
 import React from 'react';
-import { EditorState, Entity, SelectionState } from 'draft-js';
+import { EditorState, Entity, SelectionState } from '@alipay/draft-js';
 import emojiList from './emojis-list';
 import { createEntity, replaceEntity, exportEntity } from './util';
-import { decode } from 'draft-js/lib/DraftOffsetKey';
+import { decode } from '@alipay/draft-js/lib/DraftOffsetKey';
 
 const emojiMap = {};
 
@@ -34,11 +34,12 @@ class EmojiRaw extends React.Component {
       focusOffset: endKey,
     });
     if (emojiMap.hasOwnProperty(decoratedText)) {
+      const contentStateWithEntity = createEntity(contentState, 'emoji', { emoji: emojiMap[decoratedText], export: exportEntity });
       const newEditorState = replaceEntity(
-        editorState,
+        contentStateWithEntity,
         updatedSelection,
         ' ',
-        createEntity('emoji', { emoji: emojiMap[decoratedText], export: exportEntity }),
+        contentStateWithEntity.getLastCreatedEntityKey(),
       );
 
       setEditorState(

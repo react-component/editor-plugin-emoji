@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { EditorState, Entity, Modifier, convertToRaw } from 'draft-js';
+import { EditorState, Entity, Modifier, convertToRaw } from '@alipay/draft-js';
 import { insertEntity, exportEntity } from './util';
 import EmojiButton from './EmojiButton';
 import EmojiIcon from './EmojiIcon';

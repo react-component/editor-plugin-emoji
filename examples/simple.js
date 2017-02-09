@@ -1,7 +1,7 @@
 // use jsx to render html, do not modify simple.html
 
-import 'rc-editor-plugin-emoji/assets/index.less';
-import EditorPluginEmoji from 'rc-editor-plugin-emoji';
+import '@alipay/rc-editor-plugin-emoji/assets/index.less';
+import EditorPluginEmoji from '@alipay/rc-editor-plugin-emoji';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
