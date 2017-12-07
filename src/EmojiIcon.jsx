@@ -1,6 +1,6 @@
 import React from 'react';
 import classname from 'classnames';
-import { Entity } from '@alipay/draft-js';
+import { Entity } from 'draft-js';
 const emojiRex = /\[([\u4e00-\u9fa5])+\]/g;
 
 const iconStyle = {

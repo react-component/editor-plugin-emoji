@@ -1,4 +1,4 @@
-import { EditorState, Modifier, Entity } from '@alipay/draft-js';
+import { EditorState, Modifier, Entity } from 'draft-js';
 
 export function replaceEntity(currentContent, selection, text, entity) {
   const insertContent = Modifier.replaceText(

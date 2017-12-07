@@ -1,8 +1,8 @@
 import React from 'react';
-import { EditorState, Entity, SelectionState } from '@alipay/draft-js';
+import { EditorState, Entity, SelectionState } from 'draft-js';
 import emojiList from './emojis-list';
 import { createEntity, replaceEntity, exportEntity } from './util';
-import { decode } from '@alipay/draft-js/lib/DraftOffsetKey';
+import { decode } from 'draft-js/lib/DraftOffsetKey';
 
 const emojiMap = {};
 
