@@ -35,13 +35,14 @@ class EmojiRaw extends React.Component {
     });
     if (emojiMap.hasOwnProperty(decoratedText)) {
       const contentStateWithEntity = createEntity(contentState, 'emoji', { emoji: emojiMap[decoratedText], export: exportEntity });
-      const newEditorState = replaceEntity(
+      const newEditorContentState = replaceEntity(
         contentStateWithEntity,
         updatedSelection,
         ' ',
         contentStateWithEntity.getLastCreatedEntityKey(),
       );
 
+      const newEditorState = EditorState.push(editorState, newEditorContentState, 'replace-entity');
       setEditorState(
         EditorState.moveFocusToEnd(newEditorState)
       );

@@ -9,12 +9,12 @@ export function replaceEntity(currentContent, selection, text, entity) {
     entity
   );
 
-  const InsertSpaceContent = Modifier.insertText(
+  const insertSpaceContent = Modifier.insertText(
     insertContent,
     insertContent.getSelectionAfter(),
     ' ',
   );
-  return EditorState.push(editorState, InsertSpaceContent, 'replace-entity');
+  return insertSpaceContent;
 }
 
 export function createEntity(contentState, entityType, data, entityMode = 'IMMUTABLE') {
