@@ -44,7 +44,7 @@
     "pre-commit": "1.x",
     "rc-tools": "5.x",
     "react": "0.14.x",
-    "react-addons-test-utils": "0.14.x",
+    "react-addons-test-utils": "15.6.x",
     "react-dom": "0.14.x"
   },
   "pre-commit": [
