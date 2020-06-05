@@ -39,7 +39,7 @@
     "coverage": "rc-tools run coverage"
   },
   "devDependencies": {
-    "draft-js": "^0.10.4",
+    "draft-js": "^0.11.6",
     "expect.js": "0.3.x",
     "pre-commit": "1.x",
     "rc-tools": "5.x",
